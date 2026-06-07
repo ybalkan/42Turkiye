@@ -1,0 +1,258 @@
+#!/bin/bash
+
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+BLUE="\033[0;34m"
+YELLOW="\033[1;33m"
+RESET="\033[0m"
+
+echo -e "${BLUE}==================================================${RESET}"
+echo -e "${YELLOW}       🚀 ULTIMATE YBALKAN GNL TESTER 🚀       ${RESET}"
+echo -e "${BLUE}==================================================${RESET}"
+echo ""
+
+echo -e "${GREEN}[1/3] Norminette Kontrolu Yapiliyor...${RESET}"
+norminette mandatory/ bonus/ > norm_out.log
+if grep -q "Error!" norm_out.log; then
+    echo -e "${RED}[Hata] Norminette testinden gecemediniz! Ihlalleri inceleyin:${RESET}"
+    grep "Error!" -A 1 norm_out.log
+    rm -f norm_out.log
+    exit 1
+else
+    echo -e "${GREEN}[✓] Norminette Hatasiz!${RESET}\n"
+fi
+rm -f norm_out.log
+
+echo -e "${GREEN}[2/3] Ybalkan Ozel '42 Case' Testleri Yurutuluyor...${RESET}"
+ERRORS=0
+
+# Create the tester file on the fly
+cat << 'C_EOF' > ybalkan_temp_test.c
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "bonus/get_next_line_bonus.h"
+
+int test_num = 1;
+int fail_count = 0;
+
+void check(char *expected, char *result, char *desc)
+{
+	if ((expected == NULL && result == NULL) || 
+		(expected != NULL && result != NULL && strcmp(expected, result) == 0))
+	{
+		printf("\033[0;32m[✓] Test %02d: %s\033[0m\n", test_num++, desc);
+	}
+	else
+	{
+		printf("\033[0;31m[X] Test %02d: %s\033[0m\n", test_num++, desc);
+		printf("    Beklenen: '%s'\n", expected ? expected : "NULL");
+		printf("    Alinan  : '%s'\n", result ? result : "NULL");
+		fail_count++;
+	}
+	if (result)
+		free(result);
+}
+
+void create_test_files()
+{
+	int fd;
+	
+	fd = open("test_yb1.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	write(fd, "Satir 1\nSatir 2\nSatir 3\nSatir 4\nSatir 5\n", 40);
+	close(fd);
+
+	fd = open("test_yb2.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	write(fd, "\n\nTest\n\nBitti", 13);
+	close(fd);
+
+	fd = open("test_yb3.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	for(int i=0; i<500; i++) write(fd, "A", 1);
+	write(fd, "\nSon", 4);
+	close(fd);
+}
+
+int main(void)
+{
+	int fd1, fd2, fd3, fd_inv;
+	char *line;
+	char *long_str;
+
+	printf("\n==================================================\n");
+	printf("        🚀 YBALKAN GNL TESTER (42 TESTS) 🚀       \n");
+	printf("==================================================\n\n");
+
+	create_test_files();
+
+	fd1 = open("test_yb1.txt", O_RDONLY);
+	fd2 = open("test_yb2.txt", O_RDONLY);
+	fd3 = open("test_yb3.txt", O_RDONLY);
+	fd_inv = -1; // Invalid FD
+
+	line = get_next_line(fd_inv);
+	check(NULL, line, "Gecersiz FD okuma testi (-1)");
+
+	line = get_next_line(4097); // Out of bounds FD
+	check(NULL, line, "Kapasite asimi FD okuma testi (4097)");
+
+	check("Satir 1\n", get_next_line(fd1), "Normal okuma: Satir 1");
+	check("Satir 2\n", get_next_line(fd1), "Normal okuma: Satir 2");
+	check("Satir 3\n", get_next_line(fd1), "Normal okuma: Satir 3");
+	check("Satir 4\n", get_next_line(fd1), "Normal okuma: Satir 4");
+	check("Satir 5\n", get_next_line(fd1), "Normal okuma: Satir 5");
+
+	check(NULL, get_next_line(fd1), "EOF sonrasi NULL (bitti)");
+	check(NULL, get_next_line(fd1), "EOF sonrasinda tekrar cagirilirsa NULL (crashe karsi)");
+
+	check("\n", get_next_line(fd2), "Bos satir okuma 1");
+	check("\n", get_next_line(fd2), "Bos satir okuma 2");
+	check("Test\n", get_next_line(fd2), "Yazi iceren satir okuma");
+	check("\n", get_next_line(fd2), "Bos satir okuma 3");
+	check("Bitti", get_next_line(fd2), "Sonu newline OLMAYAN son satir okuma");
+
+	long_str = malloc(502);
+	for(int i=0; i<500; i++) long_str[i] = 'A';
+	long_str[500] = '\n';
+	long_str[501] = '\0';
+	check(long_str, get_next_line(fd3), "Cok uzun satir okuma testi (500 karakter)");
+	free(long_str);
+	check("Son", get_next_line(fd3), "Uzun satir sonrasi normal okuma");
+	check(NULL, get_next_line(fd3), "Uzun okuma EOF NULL donusu");
+
+	close(fd1); close(fd2); close(fd3);
+	create_test_files();
+	fd1 = open("test_yb1.txt", O_RDONLY);
+	fd2 = open("test_yb2.txt", O_RDONLY);
+	fd3 = open("test_yb3.txt", O_RDONLY);
+
+	check("Satir 1\n", get_next_line(fd1), "[BONUS] Degisken FD - FD1 Satir 1");
+	check("\n", get_next_line(fd2), "[BONUS] Degisken FD - FD2 Satir 1");
+	
+	long_str = malloc(502);
+	for(int i=0; i<500; i++) long_str[i] = 'A';
+	long_str[500] = '\n';
+	long_str[501] = '\0';
+	check(long_str, get_next_line(fd3), "[BONUS] Degisken FD - FD3 Uzun Satir");
+	free(long_str);
+
+	check("Satir 2\n", get_next_line(fd1), "[BONUS] Degisken FD - FD1'e geri donus (Satir 2)");
+	check("\n", get_next_line(fd2), "[BONUS] Degisken FD - FD2'ye geri donus (Satir 2)");
+	check("Son", get_next_line(fd3), "[BONUS] Degisken FD - FD3'e geri donus (Son Satir)");
+
+	check("Satir 3\n", get_next_line(fd1), "[BONUS] Degisken FD - Coklu Switch 1");
+	check("Test\n", get_next_line(fd2), "[BONUS] Degisken FD - Coklu Switch 2");
+	check("Satir 4\n", get_next_line(fd1), "[BONUS] Degisken FD - Coklu Switch 3");
+	check("\n", get_next_line(fd2), "[BONUS] Degisken FD - Coklu Switch 4");
+	check("Satir 5\n", get_next_line(fd1), "[BONUS] Degisken FD - Coklu Switch 5");
+	check("Bitti", get_next_line(fd2), "[BONUS] Degisken FD - Coklu Switch 6");
+	check(NULL, get_next_line(fd3), "[BONUS] Degisken FD - Coklu Switch 7 (NULL)");
+	check(NULL, get_next_line(fd1), "[BONUS] Degisken FD - Coklu Switch 8 (NULL)");
+	check(NULL, get_next_line(fd2), "[BONUS] Degisken FD - Coklu Switch 9 (NULL)");
+	
+	close(fd1); close(fd2); close(fd3);
+
+	fd1 = open("test_yb1.txt", O_RDONLY);
+	check("Satir 1\n", get_next_line(fd1), "Yeni FD acilisinda basarili okuma");
+	close(fd1);
+	check(NULL, get_next_line(fd1), "Kapatilan FD'den okuma denemesi (Leak Koruma)");
+	
+	fd2 = open("test_yb2.txt", O_RDONLY);
+	check("\n", get_next_line(fd2), "Yeni dosya FD acilisinda bosluk okuma");
+	check("\n", get_next_line(fd2), "Yeni dosya FD acilisinda ardil bosluk");
+	check("Test\n", get_next_line(fd2), "Yeni dosya yazili devam");
+	close(fd2);
+	check(NULL, get_next_line(fd2), "Kapatildiktan sonra bos FD korumasi");
+
+	int fd4 = open("test_yb4.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	write(fd4, "A", 1);
+	close(fd4);
+	fd4 = open("test_yb4.txt", O_RDONLY);
+	check("A", get_next_line(fd4), "Tek karakter okuma (Newline yok)");
+	check(NULL, get_next_line(fd4), "Tek karakter sonrasi EOF NULL");
+	close(fd4);
+
+	int fd5 = open("test_yb5.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	write(fd5, "\n", 1);
+	close(fd5);
+	fd5 = open("test_yb5.txt", O_RDONLY);
+	check("\n", get_next_line(fd5), "Sadece tek bir newline okuma");
+	check(NULL, get_next_line(fd5), "Tek newline sonrasi EOF NULL");
+	close(fd5);
+
+	printf("\n==================================================\n");
+	if (fail_count == 0)
+		printf("       🎉 TEBRIKLER! 42/42 TEST BASARILI! 🎉      \n");
+	else
+		printf("     UYARI: %d TEST BASARISIZ VEYA ATLANDI!  \n", fail_count);
+	printf("==================================================\n\n");
+
+	remove("test_yb1.txt");
+	remove("test_yb2.txt");
+	remove("test_yb3.txt");
+	remove("test_yb4.txt");
+	remove("test_yb5.txt");
+
+	return (fail_count > 0 ? 1 : 0);
+}
+C_EOF
+
+cc -Wall -Werror -Wextra -g -D BUFFER_SIZE=42 ybalkan_temp_test.c bonus/get_next_line_bonus.c bonus/get_next_line_utils_bonus.c -o ybalkan_temp_test.out
+if [ $? -eq 0 ]; then
+    echo -e "${YELLOW}>> Ybalkan testleri (Valgrind ile birlikte) calistiriliyor...${RESET}"
+    valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all --error-exitcode=42 ./ybalkan_temp_test.out > valgrind_out.log 2>&1
+    VG_STATUS=$?
+    
+    cat valgrind_out.log | grep -v "==[0-9]*=="
+    
+    if [ $VG_STATUS -eq 42 ] || grep -q "definitely lost: [1-9]" valgrind_out.log || grep -q "All heap blocks were freed -- no leaks are possible" valgrind_out.log; then
+        if grep -q "All heap blocks were freed -- no leaks are possible" valgrind_out.log; then
+            echo -e "${GREEN}[✓] Valgrind: Hafiza sizintisi yok!${RESET}"
+        else
+            echo -e "${RED}[Hata] Valgrind testinde hafiza sizintisi veya hata tespit edildi!${RESET}"
+            ERRORS=$((ERRORS + 1))
+        fi
+    fi
+    
+    rm -f valgrind_out.log ybalkan_temp_test.out ybalkan_temp_test.c
+else
+    echo -e "${RED}[Hata] Kendi testiniz derlenemedi. Norm kurallarini bozmadiginiza emin olun.${RESET}"
+    rm -f ybalkan_temp_test.out ybalkan_temp_test.c
+    ERRORS=$((ERRORS + 1))
+fi
+
+echo -e "\n${GREEN}[3/3] Resmi 42 Motoru (Tripouille/gnlTester) Baslatiliyor...${RESET}"
+SANDBOX_DIR="ybalkan_gnl_sandbox"
+rm -rf $SANDBOX_DIR
+mkdir -p $SANDBOX_DIR
+git clone --quiet https://github.com/Tripouille/gnlTester.git $SANDBOX_DIR/gnlTester
+
+cp mandatory/* $SANDBOX_DIR/ 2>/dev/null
+cp bonus/* $SANDBOX_DIR/ 2>/dev/null
+cd $SANDBOX_DIR/gnlTester || exit 1
+
+echo -e "${YELLOW}>> Mandatory (Zorunlu) Testler (Buyuk ve Kucuk Buffer'lar dahil):${RESET}"
+export TERM=xterm
+make m
+if [ $? -ne 0 ]; then
+    ERRORS=$((ERRORS + 1))
+fi
+echo -e "\n${YELLOW}>> Bonus (Coklu Dosya ve Switch) Testler:${RESET}"
+make b
+if [ $? -ne 0 ]; then
+    ERRORS=$((ERRORS + 1))
+fi
+
+cd - > /dev/null
+rm -rf $SANDBOX_DIR
+
+echo ""
+echo -e "${BLUE}==================================================${RESET}"
+if [ $ERRORS -eq 0 ]; then
+    echo -e "${GREEN}  🎉 HER SEY MUKEMMEL! TESLIME %100 HAZIRSINIZ 🎉 ${RESET}"
+else
+    echo -e "${RED}  ❌ TESTLERDE BASARISIZLIKLAR VAR! ($ERRORS ASAMADA HATA) ❌ ${RESET}"
+    echo -e "${BLUE}==================================================${RESET}"
+    exit 1
+fi
+echo -e "${BLUE}==================================================${RESET}"

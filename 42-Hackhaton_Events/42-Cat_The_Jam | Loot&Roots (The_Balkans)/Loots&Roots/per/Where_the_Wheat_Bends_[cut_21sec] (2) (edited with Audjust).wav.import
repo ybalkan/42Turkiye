@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://co7c4nf5bvide"
+path="res://.godot/imported/Where_the_Wheat_Bends_[cut_21sec] (2) (edited with Audjust).wav-b6e494b0041de91abb2390132f9eeb19.sample"
+
+[deps]
+
+source_file="res://per/Where_the_Wheat_Bends_[cut_21sec] (2) (edited with Audjust).wav"
+dest_files=["res://.godot/imported/Where_the_Wheat_Bends_[cut_21sec] (2) (edited with Audjust).wav-b6e494b0041de91abb2390132f9eeb19.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

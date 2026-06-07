@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bec6b5ffphc1y"]
+
+[ext_resource type="Script" uid="uid://qqy7uae3amux" path="res://src/tarla/havuc/havuc.gd" id="1_xjar8"]
+[ext_resource type="Texture2D" uid="uid://rqb3aoqqeodd" path="res://src/tarla/havuc/carrot_0.png" id="2_xjar8"]
+[ext_resource type="Texture2D" uid="uid://p3pawjpy138t" path="res://src/tarla/havuc/carrot_1.png" id="3_e4t8i"]
+[ext_resource type="Texture2D" uid="uid://cy7g6yjgy0ck2" path="res://src/tarla/havuc/carrot_2.png" id="4_xjar8"]
+[ext_resource type="Texture2D" uid="uid://cligyeq22avnk" path="res://src/tarla/havuc/carrot_3.png" id="5_e4t8i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ril22"]
+size = Vector2(190, 116)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h3461"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xjar8")
+}],
+"loop": true,
+"name": &"havuc_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_e4t8i")
+}],
+"loop": true,
+"name": &"havuc_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_xjar8")
+}],
+"loop": true,
+"name": &"havuc_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_e4t8i")
+}],
+"loop": true,
+"name": &"havuc_3",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D" unique_id=1120110542]
+texture_filter = 1
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_xjar8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2014700782]
+position = Vector2(-4, 7)
+shape = SubResource("RectangleShape2D_ril22")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1781489170]
+sprite_frames = SubResource("SpriteFrames_h3461")
+animation = &"havuc_3"

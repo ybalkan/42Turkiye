@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bd8d6ipvxf884"]
+
+[ext_resource type="Script" uid="uid://ckugg4ymrlkd3" path="res://src/tarla/buğday/bugday.gd" id="1_rrtm1"]
+[ext_resource type="Texture2D" uid="uid://rqb3aoqqeodd" path="res://src/tarla/havuc/carrot_0.png" id="2_sw8nc"]
+[ext_resource type="Texture2D" uid="uid://p3pawjpy138t" path="res://src/tarla/havuc/carrot_1.png" id="3_rgrot"]
+[ext_resource type="Texture2D" uid="uid://cxngui6n2bh2u" path="res://src/tarla/buğday/bugday1.png" id="4_rrtm1"]
+[ext_resource type="Texture2D" uid="uid://2jtw05m65ftq" path="res://src/tarla/buğday/bugday2.png" id="5_fbt8v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ril22"]
+size = Vector2(190, 116)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h3461"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sw8nc")
+}],
+"loop": true,
+"name": &"bugday_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_rgrot")
+}],
+"loop": true,
+"name": &"bugday_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_rrtm1")
+}],
+"loop": true,
+"name": &"bugday_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_fbt8v")
+}],
+"loop": true,
+"name": &"bugday_3",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D" unique_id=1120110542]
+texture_filter = 1
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_rrtm1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2014700782]
+position = Vector2(-4, 7)
+shape = SubResource("RectangleShape2D_ril22")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1781489170]
+sprite_frames = SubResource("SpriteFrames_h3461")
+animation = &"bugday_3"

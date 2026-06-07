@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://b6uvfoke5julx"]
+
+[ext_resource type="Script" uid="uid://bbb6p37ukfwxf" path="res://src/tarla/lahana/lahana.gd" id="1_nj0g4"]
+[ext_resource type="Texture2D" uid="uid://rqb3aoqqeodd" path="res://src/tarla/havuc/carrot_0.png" id="2_fdhat"]
+[ext_resource type="Texture2D" uid="uid://p3pawjpy138t" path="res://src/tarla/havuc/carrot_1.png" id="3_yxshe"]
+[ext_resource type="Texture2D" uid="uid://cdph7woud0qfq" path="res://src/tarla/lahana/lahana1.png" id="4_nj0g4"]
+[ext_resource type="Texture2D" uid="uid://dmw3ladyvm8rp" path="res://src/tarla/lahana/lahana2.png" id="5_1keal"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ril22"]
+size = Vector2(190, 116)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h3461"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_fdhat")
+}],
+"loop": true,
+"name": &"lahana_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_yxshe")
+}],
+"loop": true,
+"name": &"lahana_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_nj0g4")
+}],
+"loop": true,
+"name": &"lahana_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_1keal")
+}],
+"loop": true,
+"name": &"lahana_3",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D" unique_id=1120110542]
+texture_filter = 1
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_nj0g4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2014700782]
+position = Vector2(-4, 7)
+shape = SubResource("RectangleShape2D_ril22")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1781489170]
+sprite_frames = SubResource("SpriteFrames_h3461")
+animation = &"lahana_3"

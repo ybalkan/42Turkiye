@@ -36,16 +36,28 @@ class SpaceMission(BaseModel):
     def validate_mission(self) -> "SpaceMission":
         if not self.mission_id.startswith("M"):
             raise ValueError('Mission ID must start with "M"')
+
         leaders = {Rank.commander, Rank.captain}
         if not any(m.rank in leaders for m in self.crew):
-            raise ValueError("Mission must have at least one Commander or Captain")
+            raise ValueError(
+                "Mission must have at least one Commander or Captain"
+            )
+
         if self.duration_days > 365:
-            experienced = sum(1 for m in self.crew if m.years_experience >= 5)
+            experienced = sum(
+                1 for m in self.crew if m.years_experience >= 5
+            )
             if experienced / len(self.crew) < 0.5:
-                raise ValueError("Long missions (>365 days) need 50% experienced crew")
+                raise ValueError(
+                    "Long missions (>365 days) need 50% experienced crew"
+                )
+
         inactive = [m.name for m in self.crew if not m.is_active]
         if inactive:
-            raise ValueError(f"Inactive crew members: {', '.join(inactive)}")
+            raise ValueError(
+                f"Inactive crew members: {', '.join(inactive)}"
+            )
+
         return self
 
 
@@ -54,12 +66,30 @@ def main() -> None:
     print("=" * 41)
 
     crew = [
-        CrewMember(member_id="SC001", name="Sarah Connor", rank=Rank.commander,
-                   age=38, specialization="Mission Command", years_experience=15),
-        CrewMember(member_id="JS002", name="John Smith", rank=Rank.lieutenant,
-                   age=29, specialization="Navigation", years_experience=6),
-        CrewMember(member_id="AJ003", name="Alice Johnson", rank=Rank.officer,
-                   age=25, specialization="Engineering", years_experience=3),
+        CrewMember(
+            member_id="SC001",
+            name="Sarah Connor",
+            rank=Rank.commander,
+            age=38,
+            specialization="Mission Command",
+            years_experience=15,
+        ),
+        CrewMember(
+            member_id="JS002",
+            name="John Smith",
+            rank=Rank.lieutenant,
+            age=29,
+            specialization="Navigation",
+            years_experience=6,
+        ),
+        CrewMember(
+            member_id="AJ003",
+            name="Alice Johnson",
+            rank=Rank.officer,
+            age=25,
+            specialization="Engineering",
+            years_experience=3,
+        ),
     ]
 
     mission = SpaceMission(
@@ -79,9 +109,13 @@ def main() -> None:
     print(f"Duration: {mission.duration_days} days")
     print(f"Budget: ${mission.budget_millions}M")
     print(f"Crew size: {len(mission.crew)}")
+
     print("Crew members:")
     for member in mission.crew:
-        print(f"  - {member.name} ({member.rank.value}) - {member.specialization}")
+        print(
+            f"  - {member.name} "
+            f"({member.rank.value}) - {member.specialization}"
+        )
 
 
 if __name__ == "__main__":

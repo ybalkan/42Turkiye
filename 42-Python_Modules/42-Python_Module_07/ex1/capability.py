@@ -14,10 +14,8 @@ class TransformCapability(ABC):
 
     @abstractmethod
     def transform(self) -> str:
-        """Return a string describing the transform action."""
         ...
 
     @abstractmethod
     def revert(self) -> str:
-        """Return a string describing the revert action."""
         ...

@@ -1,5 +1,3 @@
-"""tournament.py - Tests the ex2 package: Abstract Strategy pattern."""
-
 from typing import List, Tuple
 from ex0 import FlameFactory, AquaFactory
 from ex0.factory import CreatureFactory
@@ -12,7 +10,6 @@ Opponent = Tuple[CreatureFactory, BattleStrategy]
 
 
 def battle(opponents: List[Opponent]) -> None:
-    """Run a tournament between all pairs of opponents."""
     print("*** Tournament ***")
     print(f"{len(opponents)} opponents involved")
 

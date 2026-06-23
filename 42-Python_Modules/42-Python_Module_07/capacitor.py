@@ -1,11 +1,8 @@
-"""capacitor.py - Tests the ex1 package capabilities."""
-
 from ex1 import HealingCreatureFactory, TransformCreatureFactory
 from ex1.capability import HealCapability, TransformCapability
 
 
 def test_healing_factory(factory: HealingCreatureFactory) -> None:
-    """Test healing factory Creatures: describe, attack, heal."""
     print("Testing Creature with healing capability")
 
     base = factory.create_base()
@@ -24,7 +21,6 @@ def test_healing_factory(factory: HealingCreatureFactory) -> None:
 
 
 def test_transform_factory(factory: TransformCreatureFactory) -> None:
-    """Test transform factory Creatures: describe, attack, transform."""
     print("Testing Creature with transform capability")
 
     base = factory.create_base()

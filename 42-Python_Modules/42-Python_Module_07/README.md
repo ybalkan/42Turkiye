@@ -6,7 +6,7 @@ Creature tabanlı bir kart oyunu altyapısı. Üç tasarım desenini (Abstract F
 
 ---
 
-![Proje Diyagramı]
+**Proje Diyagramı**
 <img width="3388" height="1372" alt="Ekran Görüntüsü - 2026-06-23 12-25-36" src="https://github.com/user-attachments/assets/715d9935-77df-49fd-b948-6caabeeec43d" />
 <img width="3494" height="1371" alt="Ekran Görüntüsü - 2026-06-23 14-05-47" src="https://github.com/user-attachments/assets/57c14873-265b-4d8c-bb27-281876047232" />
 <img width="3494" height="1371" alt="Ekran Görüntüsü - 2026-06-23 14-05-47" src="https://github.com/user-attachments/assets/aa9af4c6-7320-4638-8d83-7b1100eb0445" />

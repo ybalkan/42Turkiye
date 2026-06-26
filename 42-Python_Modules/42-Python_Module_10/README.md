@@ -4,6 +4,10 @@ Selam, bu proje Python'da "fonksiyonel programlama" mantığını oturtmak için
 
 Aşağıda aşama aşama neler yaptığımı, hangi mantıkla hangi kodları yazdığımı detaylıca anlattım.
 
+
+
+![Uploading PY10.png…]()
+
 ---
 
 ## Adım Adım Neler Yaptım?

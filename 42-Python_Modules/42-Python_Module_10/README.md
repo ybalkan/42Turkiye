@@ -6,7 +6,7 @@ Aşağıda aşama aşama neler yaptığımı, hangi mantıkla hangi kodları yaz
 
 
 
-![Uploading PY10.png…]()
+<img width="2049" height="1581" alt="Ekran Görüntüsü - 2026-06-26 01-45-43" src="https://github.com/user-attachments/assets/e72d2457-0da2-48ec-ae02-5ef59a2ffb98" />
 
 ---
 

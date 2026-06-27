@@ -6,7 +6,27 @@ Creature tabanlı bir kart oyunu altyapısı. Üç tasarım desenini (Abstract F
 
 ---
 
-**Proje Diyagramı**
+## 📂 Adım Adım Ne Yaptım? (Yeni Başlayanlar İçin Rehber)
+
+Eğer Design Patterns dünyasına ilk adımını atıyorsan, bu süreci şöyle incelemelisin:
+
+### **ex0 / Abstract Factory (`battle.py`)**
+*   **Ne Öğrendim?** Nesne üretimini standartlaştırmak.
+*   **Adım Adım:** Flameling isimli yaratığı elimle oluşturmadım. Bir `FlameFactory` yazdım. Bu fabrika bana ateş elementli baz yaratıklar veya gelişmiş (`Pyrodon`) yaratıklar verebiliyor. `AquaFactory` de aynı komutlarla su yaratıkları veriyor. Hangi fabrikayı kullandığımı umursamadan kod yazabildim (Polimorfizm).
+
+### **ex1 / Capabilities / Mixin (`capacitor.py`)**
+*   **Ne Öğrendim?** Eklenti (Plugin) mantığı ile yetenek kazandırmak.
+*   **Adım Adım:** Yaratıklara yeni bir sınıf türetmeden "Heal" (İyileştirme) ve "Transform" (Dönüşüm) özellikleri ekledim. `Shiftling` yaratığı normalde sadece vururken, Transform yeteneği sayesinde `attack() → transform() → attack() → revert()` döngüsüne sahip oldu. Özellikler yaratıktan bağımsız yaşıyor!
+
+### **ex2 / Strategy Pattern (`tournament.py`)**
+*   **Ne Öğrendim?** Algoritmayı dışarıdan yönetmek.
+*   **Adım Adım:** Karakterin saldırı mantığını içine yazmadım. Dışarıda `NormalStrategy`, `AggressiveStrategy`, `DefensiveStrategy` isimli beyinler tasarladım. Karakter savaşa girerken ona bir beyin atadım. Karakter sadece `execute()` dedi, gerisini o an kafasındaki beyin halletti.
+
+---
+
+## 🎨 Proje Görselleri ve Yapısı
+
+**Proje Diyagramları:**
 <img width="3388" height="1372" alt="Ekran Görüntüsü - 2026-06-23 12-25-36" src="https://github.com/user-attachments/assets/715d9935-77df-49fd-b948-6caabeeec43d" />
 <img width="3494" height="1371" alt="Ekran Görüntüsü - 2026-06-23 14-05-47" src="https://github.com/user-attachments/assets/57c14873-265b-4d8c-bb27-281876047232" />
 <img width="949" height="368" alt="Ekran Görüntüsü - 2026-06-23 14-26-30" src="https://github.com/user-attachments/assets/7aef9560-2b9b-4ae6-a49e-b9b7b8b67ace" />

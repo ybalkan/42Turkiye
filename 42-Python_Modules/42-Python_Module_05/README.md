@@ -9,6 +9,8 @@ Polimorfizm, Soyut Sınıflar ve Duck Typing kavramlarını gerçek bir veri iş
 
 ---
 
+<img width="1809" height="2104" alt="py5-1" src="https://github.com/user-attachments/assets/ee49ad3a-3f9d-4e1a-ad09-0ee18b3c8926" />
+
 ### Exercise 0 — Soyut Sınıf ve Metod Ezme
 
 Sistemin temelini oluşturan `DataProcessor` soyut sınıfı burada kurulur.

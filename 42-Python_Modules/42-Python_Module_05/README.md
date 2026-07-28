@@ -17,8 +17,6 @@ Sistemin temelini oluşturan `DataProcessor` soyut sınıfı burada kurulur.
 `NumericProcessor`, `TextProcessor` ve `LogProcessor` bu şablondan türer.
 Her biri kendi veri tipini tanır, doğrular ve işler — ama hepsi aynı arayüzü kullanır.
 
-![Exercise 0 Şema](ex0_sema.png)
-
 **Kaynak kod:** `ex0/data_processor.py`
 **Yorumlu versiyon:** `anlatim/ex0/data_processor_yorumlu.py`
 **Anlatım dosyaları:** `anlatim/ex0/`
@@ -38,8 +36,6 @@ Gelen her veriyi kayıtlı işlemcilere tek tek sorar: "Bu senin malın mı?"
 Sahip çıkan işlemci veriyi alır. Kimse sahip çıkmazsa hata basar.
 Yeni işlemci eklemek için mevcut koda dokunmak gerekmez.
 
-![Exercise 1 Şema](ex1_sema.png)
-
 **Kaynak kod:** `ex1/data_stream.py`
 **Yorumlu versiyon:** `anlatim/ex1/data_stream_yorumlu.py`
 **Anlatım dosyaları:** `anlatim/ex1/`
@@ -58,8 +54,6 @@ python3 ex1/data_stream.py
 `output_pipeline()` ile işlenmiş veriler bir plugin'e aktarılır.
 Plugin'in tek şartı `process_output` metoduna sahip olmak — miras almak zorunda değil.
 `CSVExportPlugin`, `JSONExportPlugin`... Yarın başkası da eklenebilir, sisteme dokunulmaz.
-
-![Exercise 2 Şema](ex2_sema.png)
 
 **Kaynak kod:** `ex2/data_pipeline.py`
 **Yorumlu versiyon:** `anlatim/ex2/data_pipeline_yorumlu.py`

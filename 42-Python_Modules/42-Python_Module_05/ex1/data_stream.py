@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+
+from data_processor import DataProcessor
+import typing
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../ex0'))
 
-import typing
-from data_processor import DataProcessor
 
 class DataStream:
     def __init__(self) -> None:
@@ -21,7 +23,10 @@ class DataStream:
                     handled = True
                     break
             if not handled:
-                print(f"DataStream error - Can't process element in stream: {item}")
+                print(
+                    f"DataStream error - "
+                    f"Can't process element in stream: {item}"
+                )
 
     def print_processors_stats(self) -> None:
         print("== DataStream statistics ==")
@@ -30,7 +35,12 @@ class DataStream:
             return
         for p in self.processors:
             name = p.__class__.__name__.replace("Processor", " Processor")
-            print(f"{name}: total {p._total_processed} items processed, remaining {len(p._data)} on processor")
+            print(
+                f"{name}: total {p._total_processed} items processed, "
+                f"remaining {len(p._data)} "
+                f"on processor"
+            )
+
 
 if __name__ == "__main__":
     from data_processor import NumericProcessor, TextProcessor, LogProcessor
@@ -44,12 +54,20 @@ if __name__ == "__main__":
     ds.register_processor(NumericProcessor())
 
     batch1: list[typing.Any] = [
-        'Hello world',
+        "Hello world",
         [3.14, -1, 2.71],
-        [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
-         {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+        [
+            {
+                "log_level": "WARNING",
+                "log_message": "Telnet access! Use ssh instead",
+            },
+            {
+                "log_level": "INFO",
+                "log_message": "User wil is connected",
+            },
+        ],
         42,
-        ['Hi', 'five']
+        ["Hi", "five"],
     ]
     print(f"\nSend first batch of data on stream: {batch1}")
     ds.process_stream(batch1)
@@ -58,14 +76,20 @@ if __name__ == "__main__":
     print("\nRegistering other data processors")
     ds.register_processor(TextProcessor())
     ds.register_processor(LogProcessor())
-    
+
     print("Send the same batch again")
     ds.process_stream(batch1)
     ds.print_processors_stats()
 
-    print("\nConsume some elements from the data processors: Numeric 3, Text 2, Log 1")
-    for _ in range(3): ds.processors[0].output()
-    for _ in range(2): ds.processors[1].output()
-    for _ in range(1): ds.processors[2].output()
-    
+    print(
+        "\nConsume some elements from the data processors: "
+        "Numeric 3, Text 2, Log 1"
+    )
+    for _ in range(3):
+        ds.processors[0].output()
+    for _ in range(2):
+        ds.processors[1].output()
+    for _ in range(1):
+        ds.processors[2].output()
+
     ds.print_processors_stats()

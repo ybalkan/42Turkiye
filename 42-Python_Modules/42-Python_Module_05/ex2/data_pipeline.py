@@ -1,14 +1,17 @@
+#!/usr/bin/env python3
+
+from data_stream import DataStream as BaseDataStream
+import typing
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../ex0'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '../ex1'))
 
-import typing
-from data_stream import DataStream as BaseDataStream
 
 class ExportPlugin(typing.Protocol):
     def process_output(self, data: list[tuple[int, str]]) -> None:
         ...
+
 
 class DataStream(BaseDataStream):
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
@@ -22,10 +25,12 @@ class DataStream(BaseDataStream):
             if data:
                 plugin.process_output(data)
 
+
 class CSVExportPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
         print("CSV Output:")
         print(",".join(item[1] for item in data))
+
 
 class JSONExportPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
@@ -34,6 +39,7 @@ class JSONExportPlugin:
         for rank, val in data:
             items.append(f'"item_{rank}": "{val}"')
         print("{" + ", ".join(items) + "}")
+
 
 if __name__ == "__main__":
     from data_processor import NumericProcessor, TextProcessor, LogProcessor
@@ -49,12 +55,20 @@ if __name__ == "__main__":
     ds.register_processor(LogProcessor())
 
     batch1: list[typing.Any] = [
-        'Hello world',
+        "Hello world",
         [3.14, -1, 2.71],
-        [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
-         {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+        [
+            {
+                "log_level": "WARNING",
+                "log_message": "Telnet access! Use ssh instead",
+            },
+            {
+                "log_level": "INFO",
+                "log_message": "User wil is connected",
+            },
+        ],
         42,
-        ['Hi', 'five']
+        ["Hi", "five"],
     ]
     print(f"\nSend first batch of data on stream: {batch1}")
     ds.process_stream(batch1)
@@ -66,11 +80,19 @@ if __name__ == "__main__":
 
     batch2: list[typing.Any] = [
         21,
-        ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
-        [{'log_level': 'ERROR', 'log_message': '500 server crash'},
-         {'log_level': 'NOTICE', 'log_message': 'Certificate expires in 10 days'}],
+        ["I love AI", "LLMs are wonderful", "Stay healthy"],
+        [
+            {
+                "log_level": "ERROR",
+                "log_message": "500 server crash",
+            },
+            {
+                "log_level": "NOTICE",
+                "log_message": "Certificate expires in 10 days",
+            },
+        ],
         [32, 42, 64, 84, 128, 168],
-        'World hello'
+        "World hello",
     ]
     print(f"\nSend another batch of data: {batch2}")
     ds.process_stream(batch2)

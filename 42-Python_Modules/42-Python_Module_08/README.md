@@ -5,6 +5,8 @@
 Sanal ortamlar, bağımlılık yönetimi ve environment variable'lar üzerine kurulu bir proje.  
 Her egzersiz bir öncekinin üzerine inşa edilir.
 
+<img width="3028" height="1510" alt="python08png" src="https://github.com/user-attachments/assets/28a59d23-169c-4e44-aeb1-9e2fe65fc4c0" />
+
 ---
 
 ## 📂 Adım Adım Ne Yaptım? (Yeni Başlayanlar İçin Rehber)

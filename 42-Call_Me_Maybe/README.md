@@ -2,6 +2,8 @@
 
 # Call Me Maybe
 
+<img width="5580" height="6366" alt="call_me_maybe" src="https://github.com/user-attachments/assets/b9595b84-2461-42db-9213-144dfbb96adf" />
+
 ## Description
 
 Call Me Maybe turns a natural-language request into a structured function call.
